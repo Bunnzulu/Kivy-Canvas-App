@@ -1,0 +1,28 @@
+MainInterface:
+
+
+
+<MainInterface>:
+    cols:3
+    BoxLayout:
+        orientation: "vertical"
+        Label:
+            text: "Red"
+        Slider:
+            min: 0
+            max: 1
+            id: Red_Slider
+        Label:
+            text: str(Red_Slider.value)
+        Button:
+            text:"Text"
+            on_press: root.Test()
+    BoxLayout:
+        orientation: "vertical"
+        Label:
+            text:"The Canvas"
+    BoxLayout:
+        orientation: "vertical"
+        Label:
+            text:"Adjustments"
+    
