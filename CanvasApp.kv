@@ -2,32 +2,32 @@ MainInterface:
 
 
 
-#: set Tools_y_hint 0.02
+#: set Tools_y_hint 0.08
 #: set Limit_Number 50
 <MainInterface>:
     cols:3
     BoxLayout:
         orientation: "vertical"
         Label:
-            text: f"Red: {int(Red_Slider.value)}"
+            text: f"Red: {int(Red_Slider.value)}%"
         Slider:
             min: 0
             max: 100
             id: Red_Slider
         Label:
-            text: f"Green: {int(Green_Slider.value)}"
+            text: f"Green: {int(Green_Slider.value)}%"
         Slider:
             min: 0
             max: 100
             id: Green_Slider
         Label:
-            text: f"Blue: {int(Blue_Slider.value)}"
+            text: f"Blue: {int(Blue_Slider.value)}%"
         Slider:
             min: 0
             max: 100
             id: Blue_Slider
         Label:
-            text: f"Alpha: {int(Alpha_Slider.value)}"
+            text: f"Alpha: {int(Alpha_Slider.value)}%"
         Slider:
             min: 0
             max: 100
@@ -40,21 +40,18 @@ MainInterface:
                 Line:
                     circle: (self.center_x,self.center_y,10)
         BoxLayout:
-            size_hint: 1,0.2
+            size_hint: 1,Tools_y_hint
             Button:
                 text: "Rectangle"
                 id: Rect_Button
-                size_hint: None,Tools_y_hint
                 on_press: root.Set_Shape("Rectangle")
             Button:
                 text: "Ellipse"
                 id: Ellipse_Button
-                size_hint: None,Tools_y_hint
                 on_press: root.Set_Shape("Ellipse")
             Button:
                 text: "Line"
                 id: Line_Button
-                size_hint: None,Tools_y_hint
                 on_press: root.Set_Shape("Line")
     BoxLayout:
         orientation: "vertical"
