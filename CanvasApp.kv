@@ -31,14 +31,13 @@ MainInterface:
         Slider:
             min: 0
             max: 100
+            value: 100
             id: Alpha_Slider
     BoxLayout:
         orientation: "vertical"
         BoxLayout:
             id: Canvas_Box
             canvas:
-                Line:
-                    circle: (self.center_x,self.center_y,10)
         BoxLayout:
             size_hint: 1,Tools_y_hint
             Button:
@@ -53,6 +52,10 @@ MainInterface:
                 text: "Line"
                 id: Line_Button
                 on_press: root.Set_Shape("Line")
+            Button:
+                text: "Circle"
+                id: Circle_Button
+                on_press: root.Set_Shape("Circle")
     BoxLayout:
         orientation: "vertical"
         Label:
@@ -60,21 +63,23 @@ MainInterface:
         Slider:
             min: 0
             max: Limit_Number
+            value: 20
             id: Width_Slider
         Label:
             text: f"Height: {int(Height_Slider.value)}"
         Slider:
             min: 0
             max: Limit_Number
+            value: 20
             id: Height_Slider
         Label:
             text: f"Radius: {int(Radius_Slider.value)}"
         Slider:
             min: 0
             max: Limit_Number
+            value: 20
             id: Radius_Slider
         Label:
             text: f"Hollow: {Hollow_Checker.active}"
         Switch:
             id: Hollow_Checker
-            #on_active

@@ -3,11 +3,12 @@ from kivy.uix.widget import Widget
 from kivy.metrics import dp
 from kivy.uix.gridlayout import GridLayout
 from kivy.uix.boxlayout import BoxLayout
-from kivy.graphics import Color, Line, Rectangle
+from kivy.graphics import Color, Line, Rectangle,Ellipse
 
 
 class MainInterface(GridLayout):
     Place_Shape = ""
+    Line_Placements = [(),()]
     
     def Set_Shape(self,Shape:str):
         self.Place_Shape = Shape
@@ -15,7 +16,17 @@ class MainInterface(GridLayout):
     def Draw_Shape(self,pos):
         W = int(self.ids.Width_Slider.value)
         H = int(self.ids.Height_Slider.value)
-        if self.Place_Shape == "Rectangle":Rectangle(pos=pos, size=(W,H))
+        RADIUS = int(self.ids.Radius_Slider.value)
+        center = (pos[0] - (W/2),pos[1] - (H/2))
+        if self.Place_Shape == "Rectangle":Rectangle(pos=center, size=(W,H))
+        elif self.Place_Shape == "Ellipse":Ellipse(pos=center, size=(W, H))
+        elif self.Place_Shape == "Circle":Ellipse(pos=(pos[0] - RADIUS, pos[1] - RADIUS), size=(RADIUS * 2, RADIUS * 2), angle_start=0, angle_end=360)
+        elif self.Place_Shape == "Line":
+            if self.Line_Placements[0] == ():self.Line_Placements[0] = pos
+            elif self.Line_Placements[1] == ():
+                self.Line_Placements[1] = pos
+                Line(points=(self.Line_Placements[0][0],self.Line_Placements[0][1],self.Line_Placements[1][0],self.Line_Placements[1][1]))
+                self.Line_Placements = [(),()]
     
     def on_touch_up(self, touch):
         Touch_x, Touch_y = touch.pos
