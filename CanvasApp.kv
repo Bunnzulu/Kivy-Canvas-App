@@ -3,7 +3,7 @@ MainInterface:
 
 
 #: set Tools_y_hint 0.08
-#: set Limit_Number 50
+#: set Limit_Number 100
 <MainInterface>:
     cols:3
     BoxLayout:
@@ -83,3 +83,6 @@ MainInterface:
             text: f"Hollow: {Hollow_Checker.active}"
         Switch:
             id: Hollow_Checker
+        Button:
+            text: "Clear"
+            on_press: root.Clear_Canvas()

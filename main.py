@@ -28,6 +28,24 @@ class MainInterface(GridLayout):
                 Line(points=(self.Line_Placements[0][0],self.Line_Placements[0][1],self.Line_Placements[1][0],self.Line_Placements[1][1]))
                 self.Line_Placements = [(),()]
     
+    def Draw_Hollow_Shape(self,pos):
+        W = int(self.ids.Width_Slider.value)
+        H = int(self.ids.Height_Slider.value)
+        RADIUS = int(self.ids.Radius_Slider.value)
+        center = (pos[0] - (W/2),pos[1] - (H/2))
+        if self.Place_Shape == "Rectangle":Line(rectangle=(center[0],center[1],W,H))
+        elif self.Place_Shape == "Ellipse":Line(ellipse=(center[0], center[1], W,H))
+        elif self.Place_Shape == "Circle":Line(circle=(pos[0], pos[1], RADIUS))
+        elif self.Place_Shape == "Line":
+            if self.Line_Placements[0] == ():self.Line_Placements[0] = pos
+            elif self.Line_Placements[1] == ():
+                self.Line_Placements[1] = pos
+                Line(points=(self.Line_Placements[0][0],self.Line_Placements[0][1],self.Line_Placements[1][0],self.Line_Placements[1][1]))
+                self.Line_Placements = [(),()]
+
+    def Clear_Canvas(self):
+        self.ids.Canvas_Box.canvas.clear()
+
     def on_touch_up(self, touch):
         Touch_x, Touch_y = touch.pos
         if self.ids.Canvas_Box.x < Touch_x < (self.ids.Canvas_Box.x + self.ids.Canvas_Box.width) and self.ids.Canvas_Box.y < Touch_y < (self.ids.Canvas_Box.y + self.ids.Canvas_Box.height):
@@ -37,8 +55,7 @@ class MainInterface(GridLayout):
                 B = int(self.ids.Blue_Slider.value)/100
                 A = int(self.ids.Alpha_Slider.value)/100
                 Color(R, G, B, A)  
-                if self.ids.Hollow_Checker.active:
-                    pass
+                if self.ids.Hollow_Checker.active:self.Draw_Hollow_Shape(touch.pos)
                 else: self.Draw_Shape(touch.pos)
 
 
