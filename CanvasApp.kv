@@ -34,22 +34,28 @@ MainInterface:
             id: Alpha_Slider
     BoxLayout:
         orientation: "vertical"
-        canvas:
-            Line:
-                circle: (self.center_x,self.center_y,10)
         BoxLayout:
+            id: Canvas_Box
+            canvas:
+                Line:
+                    circle: (self.center_x,self.center_y,10)
+        BoxLayout:
+            size_hint: 1,0.2
             Button:
                 text: "Rectangle"
                 id: Rect_Button
                 size_hint: None,Tools_y_hint
+                on_press: root.Set_Shape("Rectangle")
             Button:
                 text: "Ellipse"
                 id: Ellipse_Button
                 size_hint: None,Tools_y_hint
+                on_press: root.Set_Shape("Ellipse")
             Button:
                 text: "Line"
                 id: Line_Button
                 size_hint: None,Tools_y_hint
+                on_press: root.Set_Shape("Line")
     BoxLayout:
         orientation: "vertical"
         Label:
