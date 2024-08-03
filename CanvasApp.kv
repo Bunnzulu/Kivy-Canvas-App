@@ -3,6 +3,7 @@ MainInterface:
 
 
 #: set Tools_y_hint 0.02
+#: set Limit_Number 50
 <MainInterface>:
     cols:3
     BoxLayout:
@@ -52,5 +53,25 @@ MainInterface:
     BoxLayout:
         orientation: "vertical"
         Label:
-            text:"Adjustments"
-    
+            text: f"Width: {int(Width_Slider.value)}"
+        Slider:
+            min: 0
+            max: Limit_Number
+            id: Width_Slider
+        Label:
+            text: f"Height: {int(Height_Slider.value)}"
+        Slider:
+            min: 0
+            max: Limit_Number
+            id: Height_Slider
+        Label:
+            text: f"Radius: {int(Radius_Slider.value)}"
+        Slider:
+            min: 0
+            max: Limit_Number
+            id: Radius_Slider
+        Label:
+            text: f"Hollow: {Hollow_Checker.active}"
+        Switch:
+            id: Hollow_Checker
+            #on_active
