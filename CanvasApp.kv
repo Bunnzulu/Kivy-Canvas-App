@@ -2,25 +2,53 @@ MainInterface:
 
 
 
+#: set Tools_y_hint 0.02
 <MainInterface>:
     cols:3
     BoxLayout:
         orientation: "vertical"
         Label:
-            text: "Red"
+            text: f"Red: {int(Red_Slider.value)}"
         Slider:
             min: 0
-            max: 1
+            max: 100
             id: Red_Slider
         Label:
-            text: str(Red_Slider.value)
-        Button:
-            text:"Text"
-            on_press: root.Test()
+            text: f"Green: {int(Green_Slider.value)}"
+        Slider:
+            min: 0
+            max: 100
+            id: Green_Slider
+        Label:
+            text: f"Blue: {int(Blue_Slider.value)}"
+        Slider:
+            min: 0
+            max: 100
+            id: Blue_Slider
+        Label:
+            text: f"Alpha: {int(Alpha_Slider.value)}"
+        Slider:
+            min: 0
+            max: 100
+            id: Alpha_Slider
     BoxLayout:
         orientation: "vertical"
-        Label:
-            text:"The Canvas"
+        canvas:
+            Line:
+                circle: (self.center_x,self.center_y,10)
+        BoxLayout:
+            Button:
+                text: "Rectangle"
+                id: Rect_Button
+                size_hint: None,Tools_y_hint
+            Button:
+                text: "Ellipse"
+                id: Ellipse_Button
+                size_hint: None,Tools_y_hint
+            Button:
+                text: "Line"
+                id: Line_Button
+                size_hint: None,Tools_y_hint
     BoxLayout:
         orientation: "vertical"
         Label:
