@@ -20,6 +20,7 @@ class MainInterface(GridLayout):
         H = int(self.ids.Height_Slider.value)
         RADIUS = int(self.ids.Radius_Slider.value)
         center = (pos[0] - (W/2),pos[1] - (H/2))
+        THICC = int(self.ids.Thickness_Slider.value)
         if self.Place_Shape == "Rectangle":Rectangle(pos=center, size=(W,H))
         elif self.Place_Shape == "Ellipse":Ellipse(pos=center, size=(W, H))
         elif self.Place_Shape == "Circle":Ellipse(pos=(pos[0] - RADIUS, pos[1] - RADIUS), size=(RADIUS * 2, RADIUS * 2), angle_start=0, angle_end=360)
@@ -27,7 +28,7 @@ class MainInterface(GridLayout):
             if self.Line_Placements[0] == ():self.Line_Placements[0] = pos
             elif self.Line_Placements[1] == ():
                 self.Line_Placements[1] = pos
-                Line(points=(self.Line_Placements[0][0],self.Line_Placements[0][1],self.Line_Placements[1][0],self.Line_Placements[1][1]))
+                Line(points=(self.Line_Placements[0][0],self.Line_Placements[0][1],self.Line_Placements[1][0],self.Line_Placements[1][1]),width=THICC)
                 self.Line_Placements = [(),()]
         elif self.Place_Shape == "Quad":
             if self.Quad_Placements[0] == ():self.Quad_Placements[0] = pos
@@ -49,15 +50,16 @@ class MainInterface(GridLayout):
         W = int(self.ids.Width_Slider.value)
         H = int(self.ids.Height_Slider.value)
         RADIUS = int(self.ids.Radius_Slider.value)
+        THICC = int(self.ids.Thickness_Slider.value)
         center = (pos[0] - (W/2),pos[1] - (H/2))
-        if self.Place_Shape == "Rectangle":Line(rectangle=(center[0],center[1],W,H))
-        elif self.Place_Shape == "Ellipse":Line(ellipse=(center[0], center[1], W,H))
-        elif self.Place_Shape == "Circle":Line(circle=(pos[0], pos[1], RADIUS))
+        if self.Place_Shape == "Rectangle":Line(rectangle=(center[0],center[1],W,H),width=THICC)
+        elif self.Place_Shape == "Ellipse":Line(ellipse=(center[0], center[1], W,H),width=THICC)
+        elif self.Place_Shape == "Circle":Line(circle=(pos[0], pos[1], RADIUS),width=THICC)
         elif self.Place_Shape == "Line":
             if self.Line_Placements[0] == ():self.Line_Placements[0] = pos
             elif self.Line_Placements[1] == ():
                 self.Line_Placements[1] = pos
-                Line(points=(self.Line_Placements[0][0],self.Line_Placements[0][1],self.Line_Placements[1][0],self.Line_Placements[1][1]))
+                Line(points=(self.Line_Placements[0][0],self.Line_Placements[0][1],self.Line_Placements[1][0],self.Line_Placements[1][1]),width=THICC)
                 self.Line_Placements = [(),()]
         elif self.Place_Shape == "Quad":
             if self.Quad_Placements[0] == ():self.Quad_Placements[0] = pos
@@ -65,9 +67,15 @@ class MainInterface(GridLayout):
             elif self.Quad_Placements[2] == ():self.Quad_Placements[2] = pos
             elif self.Quad_Placements[3] == ():
                 self.Quad_Placements[3] = pos
-                Line(Quad=(*self.Quad_Placements[0],*self.Quad_Placements[1],*self.Quad_Placements[2],*self.Quad_Placements[3]))
-                #Quad(points=(*self.Quad_Placements[0],*self.Quad_Placements[1],*self.Quad_Placements[2],*self.Quad_Placements[3]))
+                Line(points=[*self.Quad_Placements[0],*self.Quad_Placements[1],*self.Quad_Placements[2],*self.Quad_Placements[3]],close=True,width=THICC)
                 self.Quad_Placements = [(),(),(),()]
+        elif self.Place_Shape == "Triangle":
+            if self.Triangle_Placements[0] == ():self.Triangle_Placements[0] = pos
+            elif self.Triangle_Placements[1] == ():self.Triangle_Placements[1] = pos
+            elif self.Triangle_Placements[2] == ():
+                self.Triangle_Placements[2] = pos
+                Line(points=[*self.Triangle_Placements[0],*self.Triangle_Placements[1],*self.Triangle_Placements[2]],close=True,width=THICC)
+                self.Triangle_Placements = [(),(),()]
         
 
     def Clear_Canvas(self):

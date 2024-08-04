@@ -74,6 +74,13 @@ MainInterface:
             value: 20
             id: Width_Slider
         Label:
+            text: f"Line Thickness: {int(Thickness_Slider.value)}"
+        Slider:
+            min: 0
+            max: Limit_Number
+            value: 10
+            id: Thickness_Slider
+        Label:
             text: f"Height: {int(Height_Slider.value)}"
         Slider:
             min: 0
@@ -91,6 +98,7 @@ MainInterface:
             text: f"Hollow: {Hollow_Checker.active}"
         Switch:
             id: Hollow_Checker
+            active: False
         Button:
             text: "Clear"
             on_press: root.Clear_Canvas()
