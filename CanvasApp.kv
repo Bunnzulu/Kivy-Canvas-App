@@ -41,7 +41,7 @@ MainInterface:
         BoxLayout:
             size_hint: 1,Tools_y_hint
             Button:
-                text: "Rectangle"
+                text: "Rect"
                 id: Rect_Button
                 on_press: root.Set_Shape("Rectangle")
             Button:
@@ -56,6 +56,14 @@ MainInterface:
                 text: "Circle"
                 id: Circle_Button
                 on_press: root.Set_Shape("Circle")
+            Button:
+                text: "Quad"
+                id: Quad_Button
+                on_press: root.Set_Shape("Quad")
+            Button:
+                text: "Triangle"
+                id: Quad_Button
+                on_press: root.Set_Shape("Triangle")
     BoxLayout:
         orientation: "vertical"
         Label:

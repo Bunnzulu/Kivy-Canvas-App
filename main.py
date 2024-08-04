@@ -3,12 +3,14 @@ from kivy.uix.widget import Widget
 from kivy.metrics import dp
 from kivy.uix.gridlayout import GridLayout
 from kivy.uix.boxlayout import BoxLayout
-from kivy.graphics import Color, Line, Rectangle,Ellipse
+from kivy.graphics import Color, Line, Rectangle,Ellipse,Quad,Triangle
 
 
 class MainInterface(GridLayout):
     Place_Shape = ""
     Line_Placements = [(),()]
+    Triangle_Placements = [(),(),()]
+    Quad_Placements = [(),(),(),()]
     
     def Set_Shape(self,Shape:str):
         self.Place_Shape = Shape
@@ -27,7 +29,22 @@ class MainInterface(GridLayout):
                 self.Line_Placements[1] = pos
                 Line(points=(self.Line_Placements[0][0],self.Line_Placements[0][1],self.Line_Placements[1][0],self.Line_Placements[1][1]))
                 self.Line_Placements = [(),()]
-    
+        elif self.Place_Shape == "Quad":
+            if self.Quad_Placements[0] == ():self.Quad_Placements[0] = pos
+            elif self.Quad_Placements[1] == ():self.Quad_Placements[1] = pos
+            elif self.Quad_Placements[2] == ():self.Quad_Placements[2] = pos
+            elif self.Quad_Placements[3] == ():
+                self.Quad_Placements[3] = pos
+                Quad(points=(*self.Quad_Placements[0],*self.Quad_Placements[1],*self.Quad_Placements[2],*self.Quad_Placements[3]))
+                self.Quad_Placements = [(),(),(),()]
+        elif self.Place_Shape == "Triangle":
+            if self.Triangle_Placements[0] == ():self.Triangle_Placements[0] = pos
+            elif self.Triangle_Placements[1] == ():self.Triangle_Placements[1] = pos
+            elif self.Triangle_Placements[2] == ():
+                self.Triangle_Placements[2] = pos
+                Triangle(points=(*self.Triangle_Placements[0],*self.Triangle_Placements[1],*self.Triangle_Placements[2]))
+                self.Triangle_Placements = [(),(),()]
+
     def Draw_Hollow_Shape(self,pos):
         W = int(self.ids.Width_Slider.value)
         H = int(self.ids.Height_Slider.value)
@@ -42,6 +59,16 @@ class MainInterface(GridLayout):
                 self.Line_Placements[1] = pos
                 Line(points=(self.Line_Placements[0][0],self.Line_Placements[0][1],self.Line_Placements[1][0],self.Line_Placements[1][1]))
                 self.Line_Placements = [(),()]
+        elif self.Place_Shape == "Quad":
+            if self.Quad_Placements[0] == ():self.Quad_Placements[0] = pos
+            elif self.Quad_Placements[1] == ():self.Quad_Placements[1] = pos
+            elif self.Quad_Placements[2] == ():self.Quad_Placements[2] = pos
+            elif self.Quad_Placements[3] == ():
+                self.Quad_Placements[3] = pos
+                Line(Quad=(*self.Quad_Placements[0],*self.Quad_Placements[1],*self.Quad_Placements[2],*self.Quad_Placements[3]))
+                #Quad(points=(*self.Quad_Placements[0],*self.Quad_Placements[1],*self.Quad_Placements[2],*self.Quad_Placements[3]))
+                self.Quad_Placements = [(),(),(),()]
+        
 
     def Clear_Canvas(self):
         self.ids.Canvas_Box.canvas.clear()
