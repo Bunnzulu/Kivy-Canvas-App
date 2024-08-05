@@ -1,6 +1,5 @@
 from kivy.app import App
 from kivy.uix.widget import Widget
-from kivy.metrics import dp
 from kivy.uix.gridlayout import GridLayout
 from kivy.uix.boxlayout import BoxLayout
 from kivy.graphics import Color, Line, Rectangle,Ellipse,Quad,Triangle
@@ -9,6 +8,7 @@ class MainInterface(GridLayout):
     def __init__(self,**kwargs):
         super().__init__(**kwargs)
         self.bind(size=self.Resize_Drawings)
+        self.Old_Window_size = [self.width,self.height]
     Place_Shape = ""
     Line_Placements = [(),()]
     Triangle_Placements = [(),(),()]
@@ -16,7 +16,6 @@ class MainInterface(GridLayout):
     Shapes = []
     Shapes_points = []
     Lined_Shapes = []
-    Old_Window_size = []
     Old_Color = None
 
     
@@ -118,17 +117,13 @@ class MainInterface(GridLayout):
     def Resize_Shapes_points(self):
         for i in range(len(self.Shapes_points)):
             for point in range(len(self.Shapes_points[i][0].points)):
-                # print(1,self.Shapes_points[i][0].points)
                 if point%2 == 0:
-                    print("X",point)
                     ratio = self.Shapes_points[i][0].points[point]/self.Old_Window_size[0]
                     new_point = self.width * ratio
                 else:
-                    print("Y",point)
                     ratio = self.Shapes_points[i][0].points[point]/self.Old_Window_size[1]
                     new_point = self.height * ratio
                 self.Shapes_points[i][0].points[point] = new_point
-            # print(2,self.Shapes_points[i][0].points)
             self.ids.Canvas_Box.canvas.add(self.Shapes_points[i][1])
             self.ids.Canvas_Box.canvas.add(self.Shapes_points[i][0])
     
@@ -169,8 +164,6 @@ class MainInterface(GridLayout):
                 self.Old_Color = Color(R, G, B, A)  
                 if self.ids.Hollow_Checker.active:self.Draw_Hollow_Shape(touch.pos)
                 else: self.Draw_Shape(touch.pos)
-                self.Old_Window_size = [self.width,self.height]
-
                 
 
 class CanvasApp(App):
