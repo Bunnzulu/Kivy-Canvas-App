@@ -4,17 +4,20 @@ from kivy.metrics import dp
 from kivy.uix.gridlayout import GridLayout
 from kivy.uix.boxlayout import BoxLayout
 from kivy.graphics import Color, Line, Rectangle,Ellipse,Quad,Triangle
+from kivy.core.window import Window
 
 class MainInterface(GridLayout):
     def __init__(self,**kwargs):
         super().__init__(**kwargs)
-        self.bind(size=self.Resize_Drawings, pos=self.Resize_Drawings)
+        self.bind(size=self.Resize_Drawings)
+        Window.bind(fullscreen=self.Resize_Drawings)
     Place_Shape = ""
     Line_Placements = [(),()]
     Triangle_Placements = [(),(),()]
     Quad_Placements = [(),(),(),()]
     Shapes = []
     Shapes_points = []
+    Lined_Shapes = []
     Old_Window_size = []
     Old_Color = None
 
@@ -63,13 +66,11 @@ class MainInterface(GridLayout):
         RADIUS = int(self.ids.Radius_Slider.value)
         THICC = int(self.ids.Thickness_Slider.value)
         center = (pos[0] - (W/2),pos[1] - (H/2))
-        Shape = None
         Shape_points = None
-        if self.Place_Shape == "Rectangle":Shape = Line(rectangle=(center[0],center[1],W,H),width=THICC)
-        elif self.Place_Shape == "Ellipse":Shape = Line(ellipse=(center[0], center[1], W,H),width=THICC)
-        elif self.Place_Shape == "Circle":
-            Shape = Line(circle=(pos[0], pos[1], RADIUS),width=THICC)
-            print(Shape.points)
+        Lined_Shape = None
+        if self.Place_Shape == "Rectangle":Lined_Shape = Line(rectangle=(center[0],center[1],W,H),width=THICC)
+        elif self.Place_Shape == "Ellipse":Lined_Shape = Line(ellipse=(center[0], center[1], W,H),width=THICC)
+        elif self.Place_Shape == "Circle":Lined_Shape = Line(circle=(pos[0], pos[1], RADIUS),width=THICC)
         elif self.Place_Shape == "Line":
             if self.Line_Placements[0] == ():self.Line_Placements[0] = pos
             elif self.Line_Placements[1] == ():
@@ -91,17 +92,19 @@ class MainInterface(GridLayout):
                 self.Triangle_Placements[2] = pos
                 Shape_points = Line(points=[*self.Triangle_Placements[0],*self.Triangle_Placements[1],*self.Triangle_Placements[2]],close=True,width=THICC)
                 self.Triangle_Placements = [(),(),()]
-        if Shape != None:self.Shapes.append(Shape)
+        if Lined_Shape != None:self.Lined_Shapes.append((Lined_Shape,self.Old_Color,self.Place_Shape))
         if Shape_points != None: self.Shapes_points.append((Shape_points,self.Old_Color))
         
     def Clear_Canvas(self):
         self.ids.Canvas_Box.canvas.clear()
         self.Shapes = []
+        self.Shapes_points = []
   
     def Resize_Drawings(self, *args):
         self.ids.Canvas_Box.canvas.clear()
         self.Resize_Shapes()
         self.Resize_Shapes_points()
+        self.Resize_Lined_Shapes()
     
     def Resize_Shapes(self):
         for i in range(len(self.Shapes)):
@@ -127,8 +130,31 @@ class MainInterface(GridLayout):
             self.ids.Canvas_Box.canvas.add(self.Shapes_points[i][1])
             self.ids.Canvas_Box.canvas.add(self.Shapes_points[i][0])
         self.Old_Window_size = [self.width,self.height]
+    
+    def Resize_Lined_Shapes(self):
+        for i in range(len(self.Lined_Shapes)):
+            if self.Lined_Shapes[i][2] == "Rectangle":
+                rect = self.Lined_Shapes[i][0].rectangle
+                ratio_x = rect[0]/self.Old_Window_size[0]
+                ratio_y = rect[1]/self.Old_Window_size[1]
+                new_x = self.width * ratio_x
+                new_y = self.height * ratio_y
+                self.Lined_Shapes[i][0].rectangle = (new_x,new_y,*rect[2:])
+            elif self.Lined_Shapes[i][2] == "Ellipse":
+                ell = self.Lined_Shapes[i][0].ellipse
+                ratio_x = ell[0]/self.Old_Window_size[0]
+                ratio_y = ell[1]/self.Old_Window_size[1]
+                new_x = self.width * ratio_x
+                new_y = self.height * ratio_y
+                self.Lined_Shapes[i][0].ellipse = (new_x,new_y,*ell[2:])
+            elif self.Lined_Shapes[i][2] == "Circle":
+                circ = self.Lined_Shapes[i][0].circle
+                ratio_x = circ[0]/self.Old_Window_size[0]
+                ratio_y = circ[1]/self.Old_Window_size[1]
+                new_x = self.width * ratio_x
+                new_y = self.height * ratio_y
+                self.Lined_Shapes[i][0].circle = (new_x,new_y,*circ[2:])
             
-
     def on_touch_up(self, touch):
         Touch_x, Touch_y = touch.pos
         if self.ids.Canvas_Box.x < Touch_x < (self.ids.Canvas_Box.x + self.ids.Canvas_Box.width) and self.ids.Canvas_Box.y < Touch_y < (self.ids.Canvas_Box.y + self.ids.Canvas_Box.height):
@@ -141,7 +167,7 @@ class MainInterface(GridLayout):
                 if self.ids.Hollow_Checker.active:self.Draw_Hollow_Shape(touch.pos)
                 else: self.Draw_Shape(touch.pos)
                 self.Old_Window_size = [self.width,self.height]
-                print(self.Old_Window_size)
+
                 
 
 class CanvasApp(App):
