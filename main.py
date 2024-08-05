@@ -4,13 +4,11 @@ from kivy.metrics import dp
 from kivy.uix.gridlayout import GridLayout
 from kivy.uix.boxlayout import BoxLayout
 from kivy.graphics import Color, Line, Rectangle,Ellipse,Quad,Triangle
-from kivy.core.window import Window
 
 class MainInterface(GridLayout):
     def __init__(self,**kwargs):
         super().__init__(**kwargs)
         self.bind(size=self.Resize_Drawings)
-        Window.bind(fullscreen=self.Resize_Drawings)
     Place_Shape = ""
     Line_Placements = [(),()]
     Triangle_Placements = [(),(),()]
@@ -105,6 +103,7 @@ class MainInterface(GridLayout):
         self.Resize_Shapes()
         self.Resize_Shapes_points()
         self.Resize_Lined_Shapes()
+        self.Old_Window_size = [self.width,self.height]
     
     def Resize_Shapes(self):
         for i in range(len(self.Shapes)):
@@ -115,21 +114,23 @@ class MainInterface(GridLayout):
             self.Shapes[i][0].pos = (new_x,new_y)
             self.ids.Canvas_Box.canvas.add(self.Shapes[i][1])
             self.ids.Canvas_Box.canvas.add(self.Shapes[i][0])
-        self.Old_Window_size = [self.width,self.height]
 
     def Resize_Shapes_points(self):
         for i in range(len(self.Shapes_points)):
             for point in range(len(self.Shapes_points[i][0].points)):
+                # print(1,self.Shapes_points[i][0].points)
                 if point%2 == 0:
+                    print("X",point)
                     ratio = self.Shapes_points[i][0].points[point]/self.Old_Window_size[0]
                     new_point = self.width * ratio
                 else:
+                    print("Y",point)
                     ratio = self.Shapes_points[i][0].points[point]/self.Old_Window_size[1]
                     new_point = self.height * ratio
                 self.Shapes_points[i][0].points[point] = new_point
+            # print(2,self.Shapes_points[i][0].points)
             self.ids.Canvas_Box.canvas.add(self.Shapes_points[i][1])
             self.ids.Canvas_Box.canvas.add(self.Shapes_points[i][0])
-        self.Old_Window_size = [self.width,self.height]
     
     def Resize_Lined_Shapes(self):
         for i in range(len(self.Lined_Shapes)):
@@ -154,7 +155,9 @@ class MainInterface(GridLayout):
                 new_x = self.width * ratio_x
                 new_y = self.height * ratio_y
                 self.Lined_Shapes[i][0].circle = (new_x,new_y,*circ[2:])
-            
+            self.ids.Canvas_Box.canvas.add(self.Lined_Shapes[i][1])
+            self.ids.Canvas_Box.canvas.add(self.Lined_Shapes[i][0])
+
     def on_touch_up(self, touch):
         Touch_x, Touch_y = touch.pos
         if self.ids.Canvas_Box.x < Touch_x < (self.ids.Canvas_Box.x + self.ids.Canvas_Box.width) and self.ids.Canvas_Box.y < Touch_y < (self.ids.Canvas_Box.y + self.ids.Canvas_Box.height):
